@@ -1,13 +1,12 @@
 package com.efubtoy.team1.auth.kakoLogin;
 
-import com.efubtoy.team1.account.dto.AccountDTO;
+import com.efubtoy.team1.account.dto.AccountRequestDTO;
 import com.efubtoy.team1.auth.dto.LoginResponseDTO;
 import com.efubtoy.team1.utils.JWTUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,9 +36,9 @@ public class LoginController {
         System.out.println("LoginController.kakaoLoginCallback");
 
         String accessToken=kaKaoLoginService.getAccessTokenFromKakao(clientId,code);
-        AccountDTO userInfo=kaKaoLoginService.getUserInfo(accessToken);
+        AccountRequestDTO userInfo=kaKaoLoginService.getUserInfo(accessToken);
         String userAccessToken = "Bearer "+jwtUtils.createToken(userInfo);
-        String userRefreshToken="";
+        String userRefreshToken= jwtUtils.createRefreshToken(userInfo);
 
         return LoginResponseDTO.builder()
                 .userinfo(userInfo)

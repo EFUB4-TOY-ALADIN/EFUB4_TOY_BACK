@@ -1,6 +1,6 @@
 package com.efubtoy.team1.utils;
 
-import com.efubtoy.team1.account.dto.AccountDTO;
+import com.efubtoy.team1.account.dto.AccountRequestDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,14 +15,17 @@ import java.util.Date;
 @Component
 public class JWTUtils {
     private Key key;
+    private Key rKey;
 
     @Autowired
-    public JWTUtils(@Value("${spring.jwt.secret}")String secretKey){
+    public JWTUtils(@Value("${spring.jwt.secret}")String secretKey,@Value("${spring.jwt.refresh-secret}")String refreshKey ){
         byte[] decodeKey = Decoders.BASE64.decode(secretKey);
+        byte[] decodeRKey = Decoders.BASE64.decode(refreshKey);
         key= Keys.hmacShaKeyFor(decodeKey);
+        rKey=Keys.hmacShaKeyFor(decodeRKey);
     }
 
-    public String createToken(AccountDTO dto){
+    public String createToken(AccountRequestDTO dto){
         Claims claims= Jwts.claims();
         claims.put("nickname",dto.getNickname());
         claims.put("email",dto.getEmail());
@@ -32,6 +35,19 @@ public class JWTUtils {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+60*60*2*1000))
                 .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String createRefreshToken(AccountRequestDTO dto){
+        Claims claims= Jwts.claims();
+        claims.put("nickname",dto.getNickname());
+        claims.put("email",dto.getEmail());
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis()+60*60*24*14*1000))
+                .signWith(rKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 

@@ -1,7 +1,7 @@
 package com.efubtoy.team1.auth.kakoLogin;
 
 import com.efubtoy.team1.account.domain.Account;
-import com.efubtoy.team1.account.dto.AccountDTO;
+import com.efubtoy.team1.account.dto.AccountRequestDTO;
 import com.efubtoy.team1.account.repository.AccountRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -69,7 +69,7 @@ public class KaKaoLoginService {
 
     }
 
-    public AccountDTO getUserInfo(String accessToken) throws IOException{
+    public AccountRequestDTO getUserInfo(String accessToken) throws IOException{
         // kakao 서버에 access token으로 사용자 정보 요청
         String reqUrl = "https://kapi.kakao.com/v2/user/me";
         URL url = new URL(reqUrl);
@@ -105,7 +105,7 @@ public class KaKaoLoginService {
         Account account = accountRepository.findByEmail(email)
                 .orElseThrow(()-> new RuntimeException("계정을 찾을 수 없습니다. 회원가입이 필요합니다."));
 
-        AccountDTO dto = AccountDTO.builder()
+        AccountRequestDTO dto = AccountRequestDTO.builder()
                 .nickname(account.getNickname())
                 .email(account.getEmail())
                 .build();
