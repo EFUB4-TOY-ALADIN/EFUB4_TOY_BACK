@@ -12,6 +12,8 @@ import com.efubtoy.team1.global.customEnum.ItemType;
 import com.efubtoy.team1.domain.goods.service.GoodsService;
 import com.efubtoy.team1.domain.record.domain.UsedRecord;
 import com.efubtoy.team1.domain.record.service.UsedRecordService;
+import com.efubtoy.team1.global.exception.CustomException;
+import com.efubtoy.team1.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,15 +32,14 @@ public class CartService {
 
     /* 장바구니에 상품 추가 */
     public Cart addCart(Account account, CartRequestDto requestDto) {
+
+        /* 장바구니에 이미 존재하는 상품인 경우, 예외 발생 */
+        if(isAlreadyAdded(account,requestDto)) throw new CustomException(ErrorCode.ALREADY_ADDED);
+
         Cart cart = createCartByItemType(account, requestDto);
         cartRepository.save(cart);
         return cart;
     }
-
-
-
-
-
 
     public Cart createCartByItemType(Account account,CartRequestDto requestDto){
         Cart cart;
@@ -61,10 +62,10 @@ public class CartService {
     }
 
 
-
+    /* 장바구니에 중고 도서 담기 */
     public Cart addUsedBookCart(Account account, CartRequestDto requestDto){
         UsedBook usedBook = usedBookService.findUsedBookById(requestDto.getItemId());
-        if(cartRepository.existsByAccountAndUsedBook(account,usedBook)) throw new IllegalArgumentException("이미 담겨져 있습니다.");
+        if(cartRepository.existsByAccountAndUsedBook(account,usedBook)) throw new CustomException(ErrorCode.USED_BOOK_NOT_FOUND);
 
         return Cart.builder()
                 .account(account)
@@ -73,6 +74,7 @@ public class CartService {
                 .build();
     }
 
+    /* 장바구니에 중고 음반 담기 */
     public Cart addUsedRecordCart(Account account, CartRequestDto requestDto){
         UsedRecord usedRecord = usedRecordService.findUsedRecordById(requestDto.getItemId());
         if(cartRepository.existsByAccountAndUsedRecord(account,usedRecord)) throw new IllegalArgumentException("이미 담겨져 있습니다.");
@@ -84,9 +86,9 @@ public class CartService {
                 .build();
     }
 
+    /* 장바구니에 굿즈 담기 */
     public Cart addGoodsCart(Account account, CartRequestDto requestDto){
         Goods goods = goodsService.findGoodsById(requestDto.getItemId());
-        if(cartRepository.existsByAccountAndGoods(account,goods)) throw new IllegalArgumentException("이미 담겨져 있습니다.");
 
         return Cart.builder()
                 .account(account)
@@ -115,5 +117,27 @@ public class CartService {
                 .build();
     }
 
+    /* 이미 장바구니에 있는 상품인지 확인 */
+    public Boolean isAlreadyAdded(Account account, CartRequestDto requestDto){
+        switch (requestDto.getItemType()) {
+            case "book" -> {
+                UsedBook usedBook = usedBookService.findUsedBookById(requestDto.getItemId());
+                if(cartRepository.existsByAccountAndUsedBook(account,usedBook)) return Boolean.TRUE;
+                break;
+            }
+            case "record" -> {
+                UsedRecord usedRecord = usedRecordService.findUsedRecordById(requestDto.getItemId());
+                if(cartRepository.existsByAccountAndUsedRecord(account,usedRecord)) return Boolean.TRUE;
+                break;
+            }
+            case "goods" -> {
+                Goods goods = goodsService.findGoodsById(requestDto.getItemId());
+                if(cartRepository.existsByAccountAndGoods(account,goods)) return Boolean.TRUE;
+                break;
+            }
+
+        }
+        return Boolean.FALSE;
+    }
 
 }

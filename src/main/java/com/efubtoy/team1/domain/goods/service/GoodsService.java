@@ -2,6 +2,8 @@ package com.efubtoy.team1.domain.goods.service;
 
 import com.efubtoy.team1.domain.goods.domian.Goods;
 import com.efubtoy.team1.domain.goods.repository.GoodsRepository;
+import com.efubtoy.team1.global.exception.CustomException;
+import com.efubtoy.team1.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,6 @@ public class GoodsService {
 
     public Goods findGoodsById(Long goodsId){
         return goodsRepository.findById(goodsId)
-                .orElseThrow(()->new IllegalArgumentException("Unexpected goods"));
+                .orElseThrow(()->new CustomException(ErrorCode.GOODS_NOT_FOUND));
     }
 }
