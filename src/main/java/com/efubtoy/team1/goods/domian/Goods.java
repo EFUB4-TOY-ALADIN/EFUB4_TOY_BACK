@@ -1,11 +1,8 @@
-package com.efubtoy.team1.Goods.domian;
+package com.efubtoy.team1.goods.domian;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Entity
 @Table(name = "Goods")

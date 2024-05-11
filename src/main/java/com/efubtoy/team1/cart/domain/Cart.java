@@ -1,12 +1,13 @@
 package com.efubtoy.team1.cart.domain;
 
-import com.efubtoy.team1.Goods.domian.Goods;
+import com.efubtoy.team1.goods.domian.Goods;
 import com.efubtoy.team1.account.domain.Account;
 import com.efubtoy.team1.book.domain.UsedBook;
 import com.efubtoy.team1.global.ItemType;
 import com.efubtoy.team1.record.domain.UsedRecord;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -41,4 +42,13 @@ public class Cart {
     @Column(name = "item_type", length = 10)
     @Enumerated(EnumType.STRING)
     private ItemType itemType;
+
+    @Builder
+    public Cart(Account account, Goods goods, UsedBook usedBook, UsedRecord usedRecord, ItemType itemType){
+        this.account = account;
+        this.goods = goods;
+        this.usedBook = usedBook;
+        this.usedRecord = usedRecord;
+        this.itemType = itemType;
+    }
 }
