@@ -1,6 +1,6 @@
 package com.efubtoy.team1.utils;
 
-import com.efubtoy.team1.account.dto.LoginAccountResponse;
+import com.efubtoy.team1.account.dto.AccountDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,7 +22,7 @@ public class JWTUtils {
         key= Keys.hmacShaKeyFor(decodeKey);
     }
 
-    public String createToken(LoginAccountResponse dto){
+    public String createToken(AccountDTO dto){
         Claims claims= Jwts.claims();
         claims.put("nickname",dto.getNickname());
         claims.put("email",dto.getEmail());
@@ -33,5 +33,21 @@ public class JWTUtils {
                 .setExpiration(new Date(System.currentTimeMillis()+60*60*2*1000))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    public boolean isExpired(String token){
+        return Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration()
+                .before(new Date());
+    }
+
+    public String getEmail(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("email", String.class);
+
     }
 }

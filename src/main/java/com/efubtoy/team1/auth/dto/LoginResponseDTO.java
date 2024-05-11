@@ -1,5 +1,6 @@
-package com.efubtoy.team1.account.dto;
+package com.efubtoy.team1.auth.dto;
 
+import com.efubtoy.team1.account.dto.AccountDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,8 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LoginAccountResponse {
-    private String nickname;
-    private String email;
+public class LoginResponseDTO {
+
+    private AccountDTO userinfo;
     private String accessToken;
+    private String refreshToken;
+
 }

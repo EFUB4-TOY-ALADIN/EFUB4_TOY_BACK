@@ -1,13 +1,15 @@
-package com.efubtoy.team1.oauth;
+package com.efubtoy.team1.account.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter
-public class KakaoLoginUserDTO {
+public class AccountDTO {
     private String nickname;
     private String email;
 }

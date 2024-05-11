@@ -15,7 +15,6 @@ import java.util.List;
 @Table(name = "account")
 @Getter
 @NoArgsConstructor
-@NotNull
 public class Account {
 
     @Id
@@ -32,5 +31,9 @@ public class Account {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviewList = new ArrayList<>();
 
-
+    @Builder
+    public Account(String nickname, String email) {
+        this.nickname = nickname;
+        this.email = email;
+    }
 }
