@@ -13,6 +13,9 @@ public enum ErrorCode {
     NON_LOGIN(HttpStatus.UNAUTHORIZED, "로그인 후 이용 가능합니다."),
     INVALID_ACCESS(HttpStatus.BAD_REQUEST,"올바르지 않은 접근입니다. 헤더를 확인해주세요."),
 
+    //Account
+    INVALID_ACCOUNT(HttpStatus.BAD_REQUEST, "접근 권한이 없는 회원입니다."),
+
     //UsedBook
     USED_BOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 중고도서입니다."),
 
@@ -23,7 +26,8 @@ public enum ErrorCode {
     GOODS_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 굿즈입니다."),
 
     //Cart
-    ALREADY_ADDED(HttpStatus.BAD_REQUEST, "이미 장바구니에 존재하는 상품입니다.");
+    ALREADY_ADDED(HttpStatus.BAD_REQUEST, "이미 장바구니에 존재하는 상품입니다."),
+    CART_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 장바구니입니다.");
 
 
 

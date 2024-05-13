@@ -32,13 +32,24 @@ public class CartService {
 
     /* 장바구니에 상품 추가 */
     public Cart addCart(Account account, CartRequestDto requestDto) {
-
-        /* 장바구니에 이미 존재하는 상품인 경우, 예외 발생 */
         if(isAlreadyAdded(account,requestDto)) throw new CustomException(ErrorCode.ALREADY_ADDED);
 
         Cart cart = createCartByItemType(account, requestDto);
         cartRepository.save(cart);
         return cart;
+    }
+
+    /* 장바구니에 상품 삭제 */
+    public void deleteCart(Account account, Long cartId) {
+        Cart cart = findCartById(cartId);
+        if(!cart.getAccount().equals(account)) throw new CustomException(ErrorCode.INVALID_ACCOUNT);
+        cartRepository.delete(cart);
+    }
+
+    /* 장바구니 id로 장바구니 조회 */
+    public Cart findCartById(Long cartId){
+        return cartRepository.findById(cartId)
+                .orElseThrow(()->new CustomException(ErrorCode.CART_NOT_FOUND));
     }
 
     public Cart createCartByItemType(Account account,CartRequestDto requestDto){
@@ -98,21 +109,26 @@ public class CartService {
     }
 
 
+
     public CartResponseDto createDto(Account account, Cart cart){
         Long itemId = null;
+        String itemType = null;
         if(cart.getItemType().equals(ItemType.BOOK)){
             itemId = cart.getUsedBook().getUsedBookId();
+            itemType = "book";
         }
         else if(cart.getItemType().equals(ItemType.RECORD)){
             itemId = cart.getUsedRecord().getUsedRecordId();
+            itemType = "record";
         }
         else if(cart.getItemType().equals(ItemType.GOODS)){
             itemId = cart.getGoods().getGoodsId();
+            itemType = "goods";
         }
 
         return CartResponseDto.builder()
                 .nickname(account.getNickname())
-                .itemType(cart.getItemType().getType())
+                .itemType(itemType)
                 .itemId(itemId)
                 .build();
     }
