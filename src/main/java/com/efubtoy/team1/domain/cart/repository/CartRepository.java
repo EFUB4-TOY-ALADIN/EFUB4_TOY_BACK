@@ -7,8 +7,11 @@ import com.efubtoy.team1.domain.goods.domian.Goods;
 import com.efubtoy.team1.domain.record.domain.UsedRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface CartRepository extends JpaRepository<Cart, Long> {
     Boolean existsByAccountAndUsedBook(Account account, UsedBook usedBook);
     Boolean existsByAccountAndUsedRecord(Account account, UsedRecord usedRecord);
     Boolean existsByAccountAndGoods(Account account, Goods goods);
+    List<Cart> findAllByAccount(Account account);
 }

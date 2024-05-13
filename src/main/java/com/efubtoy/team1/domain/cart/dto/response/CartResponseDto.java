@@ -1,4 +1,4 @@
-package com.efubtoy.team1.domain.cart.dto;
+package com.efubtoy.team1.domain.cart.dto.response;
 
 import com.efubtoy.team1.domain.account.domain.Account;
 import com.efubtoy.team1.domain.cart.domain.Cart;

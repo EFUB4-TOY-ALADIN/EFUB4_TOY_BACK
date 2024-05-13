@@ -1,7 +1,9 @@
 package com.efubtoy.team1.domain.cart.service;
 
-import com.efubtoy.team1.domain.cart.dto.CartResponseDto;
-import com.efubtoy.team1.domain.cart.dto.CartRequestDto;
+import com.efubtoy.team1.domain.cart.dto.response.CartInfoDto;
+import com.efubtoy.team1.domain.cart.dto.response.CartItemDto;
+import com.efubtoy.team1.domain.cart.dto.response.CartResponseDto;
+import com.efubtoy.team1.domain.cart.dto.request.CartRequestDto;
 import com.efubtoy.team1.domain.goods.domian.Goods;
 import com.efubtoy.team1.domain.account.domain.Account;
 import com.efubtoy.team1.domain.book.domain.UsedBook;
@@ -17,6 +19,9 @@ import com.efubtoy.team1.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -50,6 +55,11 @@ public class CartService {
     public Cart findCartById(Long cartId){
         return cartRepository.findById(cartId)
                 .orElseThrow(()->new CustomException(ErrorCode.CART_NOT_FOUND));
+    }
+
+    /* 회원의 장바구니 목록 조회 */
+    public List<Cart> findCartListByAccount(Account account) {
+        return cartRepository.findAllByAccount(account);
     }
 
     public Cart createCartByItemType(Account account,CartRequestDto requestDto){
@@ -156,4 +166,19 @@ public class CartService {
         return Boolean.FALSE;
     }
 
+
+    public CartInfoDto getCartItemList(List<Cart> cartList) {
+        List<CartItemDto> cartItemDtoList = new ArrayList<>();
+        for(Cart cart:cartList){
+            cartItemDtoList.add(createCartItemDto(cart));
+        }
+        return CartInfoDto.of(cartItemDtoList);
+    }
+
+    public CartItemDto createCartItemDto(Cart cart){
+        if(cart.getItemType().equals(ItemType.BOOK)) return CartItemDto.cartUsedBookDto(cart);
+        else if(cart.getItemType().equals(ItemType.RECORD)) return CartItemDto.cartUsedRecordDto(cart);
+        else if(cart.getItemType().equals(ItemType.GOODS)) return CartItemDto.cartGoodsDto(cart);
+        else throw new CustomException(ErrorCode.INVALID_REQUEST);
+    }
 }
