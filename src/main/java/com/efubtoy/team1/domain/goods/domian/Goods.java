@@ -1,8 +1,12 @@
 package com.efubtoy.team1.domain.goods.domian;
 
+import com.efubtoy.team1.domain.cart.domain.Cart;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Goods")
@@ -26,5 +30,8 @@ public class Goods {
 
     @Column(name = "ref_image")
     private String refImage;
+
+    @OneToMany(mappedBy = "goods", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Cart> cartList = new ArrayList<>();
 
 }
