@@ -31,7 +31,7 @@ public class Record {
     private String publisher;
 
     @Column(name = "regular_price")
-    private int regularPrice;
+    private Long regularPrice;
 
     @Column(length = 20)
     private String location;

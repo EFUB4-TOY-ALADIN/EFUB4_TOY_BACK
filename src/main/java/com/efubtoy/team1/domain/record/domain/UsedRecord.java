@@ -19,7 +19,7 @@ public class UsedRecord {
     @Column(name = "used_record_id")
     private Long usedRecordId;
 
-    private int price;
+    private Long price;
 
     @Column(length = 10)
     @Enumerated(EnumType.STRING)
