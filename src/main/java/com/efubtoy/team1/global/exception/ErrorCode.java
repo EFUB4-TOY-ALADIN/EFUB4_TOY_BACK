@@ -23,9 +23,11 @@ public enum ErrorCode {
     GOODS_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 굿즈입니다."),
 
     //Cart
-    ALREADY_ADDED(HttpStatus.BAD_REQUEST, "이미 장바구니에 존재하는 상품입니다.");
+    ALREADY_ADDED(HttpStatus.BAD_REQUEST, "이미 장바구니에 존재하는 상품입니다."),
 
 
+    //review
+    IMAGE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드 에러" );
 
 
     private final HttpStatus status;
