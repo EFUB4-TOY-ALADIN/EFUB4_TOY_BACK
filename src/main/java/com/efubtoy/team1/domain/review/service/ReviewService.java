@@ -69,7 +69,7 @@ public class ReviewService {
         return fileName;
     }
 
-    /* 리뷰 테이블에 사진 경로들과 리뷰 내용 저장 */
+    /* 리뷰 테이블에 사진 url들과 리뷰 내용 저장 */
     public Review saveReview(Account account ,ReviewRequestDto reviewRequestDto, List<String> urlList ) {
         Review review = reviewRequestDto.toEntity(account);
         Review savedReview = reviewRepository.save(review);

@@ -25,7 +25,7 @@ public enum ErrorCode {
     //Cart
     ALREADY_ADDED(HttpStatus.BAD_REQUEST, "이미 장바구니에 존재하는 상품입니다."),
     CART_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 장바구니입니다."),
-    
+
     INVALID_REQUEST(HttpStatus.BAD_REQUEST, "올바르지 않은 요청입니다."),
 
     //review

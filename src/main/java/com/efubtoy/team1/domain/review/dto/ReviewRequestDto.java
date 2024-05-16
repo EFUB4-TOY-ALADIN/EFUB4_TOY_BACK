@@ -24,8 +24,7 @@ public class ReviewRequestDto {
     private Long grade;
     @NotBlank(message = "계정 id는 필수입니다.")
     private String accountId;
-    @NotBlank(message = "사진을 최소 1장 넣어주세요.")
-    private List<ReviewImage> reviewImageList;
+
 
     public Review toEntity(Account account){
         return Review.builder()
