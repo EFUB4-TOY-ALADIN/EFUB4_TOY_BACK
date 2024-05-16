@@ -2,10 +2,8 @@ package com.efubtoy.team1.domain.review.dto;
 
 import com.efubtoy.team1.domain.account.domain.Account;
 import com.efubtoy.team1.domain.review.domain.Review;
-import com.efubtoy.team1.domain.review.domain.ReviewImage;
-import jakarta.persistence.CascadeType;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +19,7 @@ public class ReviewRequestDto {
     @NotBlank(message = "내용은 필수입니다.")
     private String content;
     @NotBlank(message = "평점은 필수입니다.")
+    @Max(value = 6, message = "평점은 5 이하여야 합니다.")
     private Long grade;
     @NotBlank(message = "계정 id는 필수입니다.")
     private String accountId;

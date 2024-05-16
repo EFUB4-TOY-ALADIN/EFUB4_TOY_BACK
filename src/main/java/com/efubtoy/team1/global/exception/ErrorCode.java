@@ -35,7 +35,11 @@ public enum ErrorCode {
     INVALID_REQUEST(HttpStatus.BAD_REQUEST, "올바르지 않은 요청입니다."),
 
     //review
-    IMAGE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드 에러" );
+    IMAGE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드 에러" ),
+    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 리뷰를 찾을 수 없습니다."),
+
+    //Image
+    TOO_MANY_FILES(HttpStatus.BAD_REQUEST,"최대 4개의 파일만 업로드할 수 있습니다.");
 
 
     private final HttpStatus status;
