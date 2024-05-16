@@ -33,6 +33,9 @@ public class Book {
     @Column(length = 20)
     private String location;
 
+    @Transient
+    private int stock;
+
     @Column(name = "is_domestic")
     private boolean isDomestic;
 
@@ -47,5 +50,17 @@ public class Book {
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UsedBook> usedBookList = new ArrayList<>();
+
+    public int getStock(){
+        return usedBookList.size();
+    }
+
+    @PostLoad
+    @PostPersist
+    @PostUpdate
+    public void updateStock(){
+        this.stock=usedBookList.size();
+    }
+
 
 }
