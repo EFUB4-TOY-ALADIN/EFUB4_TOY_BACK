@@ -1,7 +1,7 @@
 package com.efubtoy.team1.domain.cart.service;
 
-import com.efubtoy.team1.domain.cart.dto.CartResponseDto;
-import com.efubtoy.team1.domain.cart.dto.CartRequestDto;
+import com.efubtoy.team1.domain.cart.dto.response.CartItemDto;
+import com.efubtoy.team1.domain.cart.dto.request.CartRequestDto;
 import com.efubtoy.team1.domain.goods.domian.Goods;
 import com.efubtoy.team1.domain.account.domain.Account;
 import com.efubtoy.team1.domain.book.domain.UsedBook;
@@ -15,8 +15,13 @@ import com.efubtoy.team1.domain.record.service.UsedRecordService;
 import com.efubtoy.team1.global.exception.CustomException;
 import com.efubtoy.team1.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -31,14 +36,37 @@ public class CartService {
 
 
     /* 장바구니에 상품 추가 */
-    public Cart addCart(Account account, CartRequestDto requestDto) {
-
-        /* 장바구니에 이미 존재하는 상품인 경우, 예외 발생 */
+    public ResponseEntity<CartItemDto> addCart(Account account, CartRequestDto requestDto) {
         if(isAlreadyAdded(account,requestDto)) throw new CustomException(ErrorCode.ALREADY_ADDED);
-
         Cart cart = createCartByItemType(account, requestDto);
         cartRepository.save(cart);
-        return cart;
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(createCartItemDto(cart));
+    }
+
+    /* 장바구니에 상품 삭제 */
+    public ResponseEntity deleteCart(Account account, Long cartId) {
+        Cart cart = findCartById(cartId);
+        if(!cart.getAccount().equals(account)) throw new CustomException(ErrorCode.INVALID_ACCOUNT);
+        cartRepository.delete(cart);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("장바구니가 삭제되었습니다!");
+    }
+
+    /* 장바구니 id로 장바구니 조회 */
+    public Cart findCartById(Long cartId){
+        return cartRepository.findById(cartId)
+                .orElseThrow(()->new CustomException(ErrorCode.CART_NOT_FOUND));
+    }
+
+    /* 회원의 장바구니 목록 조회 */
+    public ResponseEntity<List<CartItemDto>> findCartListByAccount(Account account) {
+        List<Cart> cartList = cartRepository.findAllByAccount(account);
+
+        List<CartItemDto> cartItemDtoList = new ArrayList<>();
+        for(Cart cart : cartList) { cartItemDtoList.add(createCartItemDto(cart));}
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(cartItemDtoList);
     }
 
     public Cart createCartByItemType(Account account,CartRequestDto requestDto){
@@ -60,7 +88,6 @@ public class CartService {
         }
         return cart;
     }
-
 
     /* 장바구니에 중고 도서 담기 */
     public Cart addUsedBookCart(Account account, CartRequestDto requestDto){
@@ -97,26 +124,6 @@ public class CartService {
                 .build();
     }
 
-
-    public CartResponseDto createDto(Account account, Cart cart){
-        Long itemId = null;
-        if(cart.getItemType().equals(ItemType.BOOK)){
-            itemId = cart.getUsedBook().getUsedBookId();
-        }
-        else if(cart.getItemType().equals(ItemType.RECORD)){
-            itemId = cart.getUsedRecord().getUsedRecordId();
-        }
-        else if(cart.getItemType().equals(ItemType.GOODS)){
-            itemId = cart.getGoods().getGoodsId();
-        }
-
-        return CartResponseDto.builder()
-                .nickname(account.getNickname())
-                .itemType(cart.getItemType().getType())
-                .itemId(itemId)
-                .build();
-    }
-
     /* 이미 장바구니에 있는 상품인지 확인 */
     public Boolean isAlreadyAdded(Account account, CartRequestDto requestDto){
         switch (requestDto.getItemType()) {
@@ -140,4 +147,11 @@ public class CartService {
         return Boolean.FALSE;
     }
 
+    /* 응답 dto 생성 */
+    public CartItemDto createCartItemDto(Cart cart){
+        if(cart.getItemType().equals(ItemType.BOOK)) return CartItemDto.cartUsedBookDto(cart);
+        else if(cart.getItemType().equals(ItemType.RECORD)) return CartItemDto.cartUsedRecordDto(cart);
+        else if(cart.getItemType().equals(ItemType.GOODS)) return CartItemDto.cartGoodsDto(cart);
+        else throw new CustomException(ErrorCode.INVALID_REQUEST);
+    }
 }

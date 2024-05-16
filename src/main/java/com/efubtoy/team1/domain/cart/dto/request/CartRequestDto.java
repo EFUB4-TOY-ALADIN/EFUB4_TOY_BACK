@@ -1,4 +1,4 @@
-package com.efubtoy.team1.domain.cart.dto;
+package com.efubtoy.team1.domain.cart.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
