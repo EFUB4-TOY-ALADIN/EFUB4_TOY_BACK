@@ -21,9 +21,9 @@ public class Goods {
     @Column(name = "goods_name", length = 50)
     private String goodsName;
 
-    private int price;
+    private Long price;
 
-    private int stock;
+    private Long stock;
 
     @Column(length = 20)
     private String location;
