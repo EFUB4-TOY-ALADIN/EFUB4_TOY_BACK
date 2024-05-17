@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class GoodsDto {
-    private long goods_id;
+    private Long goods_id;
     private String goods_name;
-    private int price;
-    private int stock;
+    private Long price;
+    private Long stock;
     private String location;
     private String ref_image;
 
