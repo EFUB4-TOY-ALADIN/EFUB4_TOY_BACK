@@ -26,4 +26,6 @@ public class RecordController {
     public ResponseEntity<RecordInfoResponseDto> getUsedRecordList(@PathVariable("recordId")Long recordId){
         return usedRecordService.findUsedRecordList(recordId);
     }
+
+    /* */
 }
