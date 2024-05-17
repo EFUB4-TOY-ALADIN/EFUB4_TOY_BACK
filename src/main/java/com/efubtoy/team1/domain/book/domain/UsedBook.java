@@ -21,7 +21,7 @@ public class UsedBook {
     @Column(name = "used_book_id")
     private Long usedBookId;
 
-    private int price;
+    private Long price;
 
     @Column(length = 10)
     @Enumerated(EnumType.STRING)

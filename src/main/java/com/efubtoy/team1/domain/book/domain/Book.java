@@ -28,22 +28,22 @@ public class Book {
     private String publisher;
 
     @Column(name = "regular_price")
-    private int regularPrice;
+    private Long regularPrice;
 
     @Column(length = 20)
     private String location;
 
     @Transient
-    private int stock;
+    private Long stock;
 
     @Column(name = "is_domestic")
-    private boolean isDomestic;
+    private Boolean isDomestic;
 
     @Column(columnDefinition = "TINYINT")
-    private int category;
+    private Long category;
 
     @Column(columnDefinition = "TINYINT")
-    private int topic;
+    private Long topic;
 
     @Column(name = "ref_image")
     private String refImage;
@@ -51,7 +51,7 @@ public class Book {
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UsedBook> usedBookList = new ArrayList<>();
 
-    public int getStock(){
+    public long getStock(){
         return usedBookList.size();
     }
 
@@ -59,7 +59,7 @@ public class Book {
     @PostPersist
     @PostUpdate
     public void updateStock(){
-        this.stock=usedBookList.size();
+        this.stock= (long) usedBookList.size();
     }
 
 

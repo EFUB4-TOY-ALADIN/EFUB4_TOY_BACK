@@ -18,9 +18,9 @@ public class BookDto {
     private String title;
     private String author;
     private String publisher;
-    private int regularPrice;
+    private Long regularPrice;
     private String location;
-    private int stock;
+    private Long stock;
     private String domestic;
     private String category;
     private String topic;
@@ -35,7 +35,7 @@ public class BookDto {
                 .regularPrice(book.getRegularPrice())
                 .location(book.getLocation())
                 .stock(book.getStock())
-                .domestic(IsDomestic.getDomesticByIsDomestic(book.isDomestic()))
+                .domestic(IsDomestic.getDomesticByIsDomestic(book.getIsDomestic()))
                 .category(Category.getCategoryByNum(book.getCategory()))
                 .topic(Topic.getTopicByTopicNum(book.getTopic()))
                 .refImage(book.getRefImage())
