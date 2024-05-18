@@ -15,8 +15,6 @@ public class RecordService {
 
     private final RecordRepository recordRepository;
 
-
-
     /* id 로 record 조회 */
     public Record findRecordByRecordId(Long recordId) {
         return recordRepository.findById(recordId)

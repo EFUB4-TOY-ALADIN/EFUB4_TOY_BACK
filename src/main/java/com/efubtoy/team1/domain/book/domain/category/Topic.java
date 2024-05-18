@@ -8,16 +8,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public enum Topic {
-    TOP1(1, "건강운동"),
-    TOP2(2,"걷기정보"),
-    TOP3(3,"공예"),
-    TOP4(4, "글씨쓰기");
-    private final int topicNum;
+    TOP1(1L, "건강운동"),
+    TOP2(2L,"걷기정보"),
+    TOP3(3L,"공예"),
+    TOP4(4L, "글씨쓰기");
+    private final Long topicNum;
     private final String topic;
 
-    public static String getTopicByTopicNum(int topicNum){
+    public static String getTopicByTopicNum(Long topicNum){
         for(Topic topic : Topic.values()){
-            if (topic.getTopicNum()==topicNum){
+            if (topic.getTopicNum().equals(topicNum)){
                 return topic.getTopic();
             }
         }

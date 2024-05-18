@@ -6,24 +6,24 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum IsDomestic {
-    DOMESTIC(1,"국내 도서",true),
-    NOTDOMESTIC(2,"해외 도서", false);
-    private final int domesticNum;
+    DOMESTIC(1L,"국내 도서",true),
+    NOTDOMESTIC(2L,"해외 도서", false);
+    private final Long domesticNum;
     private final String domestic;
-    private final boolean isDomestic;
+    private final Boolean isDomestic;
 
-    public static String getDomesticByIsDomestic(boolean isDomestic){
+    public static String getDomesticByIsDomestic(Boolean isDomestic){
         for (IsDomestic dom : IsDomestic.values()){
-            if (dom.isDomestic==isDomestic){
+            if (dom.isDomestic.equals(isDomestic)){
                 return dom.getDomestic();
             }
         }
         throw new RuntimeException("도서분류가 존재하지 않습니다.");
     }
 
-    public static boolean getIsDomesticByDomesticNum(int domesticNum){
+    public static Boolean getIsDomesticByDomesticNum(Long domesticNum){
         for(IsDomestic dom : IsDomestic.values()){
-            if (dom.getDomesticNum()==domesticNum){
+            if (dom.getDomesticNum().equals(domesticNum)){
                 return dom.isDomestic;
             }
         }

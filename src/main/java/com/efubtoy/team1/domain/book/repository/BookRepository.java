@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
-    List<Book> findByIsDomesticAndCategoryAndTopic(boolean isDomestic, int category, int topic);
+    List<Book> findByIsDomesticAndCategoryAndTopic(Boolean isDomestic, Long category, Long topic);
 }

@@ -24,7 +24,7 @@ public class BookListResponseDto {
     private String topic;
     private List<BookDto> booklist=new ArrayList<>();
 
-    public static BookListResponseDto of(int isDomestic, int category, int topic, List<Book> bookList){
+    public static BookListResponseDto of(Long isDomestic, Long category, Long topic, List<Book> bookList){
         return BookListResponseDto.builder()
                 .domestic(IsDomestic.getDomesticByIsDomestic(IsDomestic.getIsDomesticByDomesticNum(isDomestic)))
                 .category(Category.getCategoryByNum(category))
