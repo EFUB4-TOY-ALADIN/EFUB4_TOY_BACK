@@ -16,6 +16,7 @@ public class GoodsDto {
     private Long price;
     private Long stock;
     private String location;
+    private String info;
     private String ref_image;
 
     public static GoodsDto of(Goods e){
@@ -25,6 +26,7 @@ public class GoodsDto {
                 .price(e.getPrice())
                 .stock(e.getStock())
                 .location(e.getLocation())
+                .info(e.getInfo())
                 .ref_image(e.getRefImage())
                 .build();
     }
