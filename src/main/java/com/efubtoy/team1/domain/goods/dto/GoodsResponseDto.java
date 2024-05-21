@@ -16,6 +16,7 @@ public class GoodsResponseDto {
     private Long price;
     private Long stock;
     private String location;
+    private String info;
     private String refImage;
 
 
@@ -26,6 +27,7 @@ public class GoodsResponseDto {
                 .price(goods.getPrice())
                 .stock(goods.getStock())
                 .location(goods.getLocation())
+                .info(goods.getInfo())
                 .refImage(goods.getRefImage())
                 .build();
     }

@@ -28,6 +28,8 @@ public class Goods {
     @Column(length = 20)
     private String location;
 
+    private String info;
+
     @Column(name = "ref_image")
     private String refImage;
 
