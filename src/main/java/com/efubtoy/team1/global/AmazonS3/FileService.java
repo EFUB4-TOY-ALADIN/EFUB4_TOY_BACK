@@ -2,6 +2,7 @@ package com.efubtoy.team1.global.AmazonS3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.efubtoy.team1.global.exception.CustomException;
@@ -21,9 +22,10 @@ import java.util.UUID;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class FileUploadService {
+public class FileService {
 
     private final AmazonS3 amazonS3Client;
+
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -61,5 +63,12 @@ public class FileUploadService {
         final String ext = originalName.substring(originalName.lastIndexOf("."));
         final String fileName = UUID.randomUUID().toString() + ext;
         return fileName;
+    }
+
+    /* S3 이미지 삭제 */
+    public void deleteImage(String ImageUrl){
+        String splitStr = ".com/";
+        String fileName = ImageUrl.substring(ImageUrl.lastIndexOf(splitStr)+ splitStr.length());
+        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, ImageUrl));
     }
 }

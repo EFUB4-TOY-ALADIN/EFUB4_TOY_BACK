@@ -7,12 +7,17 @@ import com.efubtoy.team1.domain.review.domain.ReviewImage;
 import com.efubtoy.team1.domain.review.dto.ReviewRequestDto;
 import com.efubtoy.team1.domain.review.repository.ReviewImageRepository;
 import com.efubtoy.team1.domain.review.repository.ReviewRepository;
+import com.efubtoy.team1.global.AmazonS3.FileService;
 import com.efubtoy.team1.global.exception.CustomException;
 import com.efubtoy.team1.global.exception.ErrorCode;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -22,6 +27,7 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final ReviewImageRepository reviewImageRepository;
+    private final FileService fileService;
 
 
     /* 리뷰 테이블에 사진 url들과 리뷰 내용 저장 */
@@ -43,6 +49,20 @@ public class ReviewService {
         }
     }
 
+    /* 리뷰 전체 조회 */
+    @Transactional(readOnly = true)
+    public List<Review> findAllReview(){
+        List<Review> reviews = reviewRepository.findAll();
+        return reviews;
+    }
 
 
+    /* 리뷰 삭제 */
+    public void deleteReview(Long id) {
+        Review review = reviewRepository.findById(id)
+                .orElseThrow(()->new EntityNotFoundException("해당 id를 가진 Post를 찾을 수 없습니다. id="+id));
+        String reviewImageUrl = reviewImageRepository.findImageByReview(review);
+        fileService.deleteImage(reviewImageUrl);
+        reviewRepository.delete(review);
+    }
 }
