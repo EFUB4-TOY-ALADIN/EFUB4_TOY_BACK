@@ -1,6 +1,7 @@
 package com.efubtoy.team1.domain.review.dto;
 
 import com.efubtoy.team1.domain.review.domain.Review;
+import com.efubtoy.team1.domain.review.domain.ReviewImage;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

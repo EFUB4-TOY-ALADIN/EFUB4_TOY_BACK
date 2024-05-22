@@ -7,6 +7,7 @@ import com.efubtoy.team1.domain.review.dto.ReviewImageResponseDto;
 import com.efubtoy.team1.domain.review.dto.ReviewRequestDto;
 import com.efubtoy.team1.domain.review.dto.ReviewResponseDto;
 import com.efubtoy.team1.domain.review.service.ReviewService;
+import com.efubtoy.team1.global.AmazonS3.FileDto;
 import com.efubtoy.team1.global.AmazonS3.FileService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,7 @@ import java.util.List;
 public class ReviewController {
 
     private final ReviewService reviewService;
-    private final FileService fileUploadService;
+    private final FileService fileService;
 
     /* 리뷰 작성 */
     @PostMapping
@@ -31,9 +33,11 @@ public class ReviewController {
     public ReviewResponseDto uploadReview(@AuthUser Account account ,
                              @RequestPart(value= "ReviewImage" , required = false) List<MultipartFile> multipartFiles ,
                              ReviewRequestDto reviewRequestDto){
-        List<String> urlList = fileUploadService.fileUpload(multipartFiles);
-        System.out.println("Image 경로 : " + urlList);
-        Review savedReview = reviewService.saveReview(account , reviewRequestDto , urlList ); // 이미지 경로들 받아서 리뷰 생성
+        List<FileDto> fileDtos = fileService.fileUpload(multipartFiles);
+        for(FileDto fileDto : fileDtos){
+            System.out.println("Image 경로 : " + fileDto.getImgUrl());
+        }
+        Review savedReview = reviewService.saveReview(account , reviewRequestDto , fileDtos ); // 이미지 경로들 받아서 리뷰 생성
         return ReviewResponseDto.from(savedReview);
     }
 

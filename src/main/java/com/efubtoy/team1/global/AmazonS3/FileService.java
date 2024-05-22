@@ -1,5 +1,6 @@
 package com.efubtoy.team1.global.AmazonS3;
 
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
@@ -15,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -31,8 +34,8 @@ public class FileService {
     private String bucket;
 
     /* 이미지 S3에 업로드 */
-    public List<String> fileUpload(List<MultipartFile> multipartFiles) {
-        List<String> urlList = new ArrayList<>();
+    public List<FileDto> fileUpload(List<MultipartFile> multipartFiles) {
+        List<FileDto> fileDtos = new ArrayList<>();
         if(multipartFiles != null && !multipartFiles.isEmpty()){
             if(multipartFiles.size() > 4) {
                 throw new CustomException(ErrorCode.TOO_MANY_FILES);
@@ -46,7 +49,8 @@ public class FileService {
                 try (InputStream inputStream = file.getInputStream()) {
                     amazonS3Client.putObject(new PutObjectRequest(bucket + "/review/image", fileName, inputStream, objectMetadata)
                             .withCannedAcl(CannedAccessControlList.PublicRead));
-                    urlList.add(amazonS3Client.getUrl(bucket + "/review/image", fileName).toString());
+                    String imgUrl = amazonS3Client.getUrl(bucket + "/review/image", fileName).toString();
+                    fileDtos.add(new FileDto(fileName , imgUrl));
                 } catch (IOException e) {
                     throw new CustomException(ErrorCode.IMAGE_UPLOAD_ERROR, "image upload fail");
                 }
@@ -54,7 +58,7 @@ public class FileService {
             }
 
         }
-        return urlList;
+        return fileDtos;
     }
 
     /* 파일명 생성 */
@@ -66,9 +70,8 @@ public class FileService {
     }
 
     /* S3 이미지 삭제 */
-    public void deleteImage(String ImageUrl){
-        String splitStr = ".com/";
-        String fileName = ImageUrl.substring(ImageUrl.lastIndexOf(splitStr)+ splitStr.length());
-        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, ImageUrl));
+    public void deleteImage(String ImageUrl , String fileName) {
+        String key = "review/image/" + fileName;
+        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket , key));
     }
 }
