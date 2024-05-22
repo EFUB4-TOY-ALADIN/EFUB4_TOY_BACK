@@ -19,6 +19,7 @@ public class GoodsResponseDto {
     private String info;
     private String refImage;
 
+
     public static GoodsResponseDto of(Goods goods){
         return GoodsResponseDto.builder()
                 .goodsId(goods.getGoodsId())
