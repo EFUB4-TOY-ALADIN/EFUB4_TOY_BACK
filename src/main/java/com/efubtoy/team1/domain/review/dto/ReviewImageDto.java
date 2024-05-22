@@ -13,15 +13,14 @@ public class ReviewImageDto {
 
     private Long imageId;
     private String imageUrl;
-    private String fileName;
+
 
 
 
     public static ReviewImageDto from(ReviewImage reviewImage) {
         return new ReviewImageDto(
                 reviewImage.getImageId(),
-                reviewImage.getImageUrl(),
-                reviewImage.getFileName()
+                reviewImage.getImageUrl()
         );
     }
 

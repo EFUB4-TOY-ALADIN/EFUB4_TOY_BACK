@@ -7,7 +7,6 @@ import com.efubtoy.team1.domain.review.domain.ReviewImage;
 import com.efubtoy.team1.domain.review.dto.ReviewRequestDto;
 import com.efubtoy.team1.domain.review.repository.ReviewImageRepository;
 import com.efubtoy.team1.domain.review.repository.ReviewRepository;
-import com.efubtoy.team1.global.AmazonS3.FileDto;
 import com.efubtoy.team1.global.AmazonS3.FileService;
 import com.efubtoy.team1.global.exception.CustomException;
 import com.efubtoy.team1.global.exception.ErrorCode;
@@ -16,11 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -34,7 +29,7 @@ public class ReviewService {
 
 
     /* 리뷰 테이블에 사진 url들과 리뷰 내용 저장 */
-    public Review saveReview(Account account ,ReviewRequestDto reviewRequestDto, List<FileDto> urlList ) {
+    public Review saveReview(Account account ,ReviewRequestDto reviewRequestDto, List<String> urlList ) {
         Review review = reviewRequestDto.toEntity(account);
         Review savedReview = reviewRepository.save(review);
         saveReviewImage(savedReview.getReviewId() , urlList); // 반환받은 id로 리뷰 이미지 테이블 저장
@@ -42,12 +37,12 @@ public class ReviewService {
     }
 
     /*리뷰 이미지와 리뷰 id를 리뷰 이미지 테이블에 저장*/
-    public void saveReviewImage(Long reviewId , List<FileDto> fileDtos){
+    public void saveReviewImage(Long reviewId , List<String> urlLists){
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
 
-        for (FileDto fileDto : fileDtos) {
-            ReviewImage reviewImage = new ReviewImage(fileDto.getImgUrl() , fileDto.getFileName(), review);
+        for (String imageUrl  : urlLists) {
+            ReviewImage reviewImage = new ReviewImage(imageUrl, review);
             reviewImageRepository.save(reviewImage);
         }
     }
@@ -65,7 +60,7 @@ public class ReviewService {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(()->new EntityNotFoundException("해당 id를 가진 Post를 찾을 수 없습니다. id="+id));
         ReviewImage reviewImage = reviewImageRepository.findImageByReview(review);
-        fileService.deleteImage(reviewImage.getImageUrl(), reviewImage.getFileName());
+        fileService.deleteImage(reviewImage.getImageUrl());
         reviewRepository.delete(review);
     }
 }

@@ -23,9 +23,6 @@ public class ReviewImage{
     @Column(name = "image_url", length = 255)
     private String imageUrl;
 
-    @Column(name= "file_name" , length = 255)
-    private String fileName;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id", updatable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -34,9 +31,8 @@ public class ReviewImage{
 
 
     @Builder
-    public ReviewImage( String imageUrl, String fileName , Review review) {
+    public ReviewImage( String imageUrl, Review review) {
         this.imageUrl = imageUrl;
-        this.fileName = fileName;
         this.review = review;
     }
 }

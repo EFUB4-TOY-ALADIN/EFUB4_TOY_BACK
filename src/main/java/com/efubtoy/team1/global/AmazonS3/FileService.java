@@ -34,8 +34,9 @@ public class FileService {
     private String bucket;
 
     /* 이미지 S3에 업로드 */
-    public List<FileDto> fileUpload(List<MultipartFile> multipartFiles) {
-        List<FileDto> fileDtos = new ArrayList<>();
+    /* 이미지 S3에 업로드 */
+    public List<String> fileUpload(List<MultipartFile> multipartFiles) {
+        List<String> urlList = new ArrayList<>();
         if(multipartFiles != null && !multipartFiles.isEmpty()){
             if(multipartFiles.size() > 4) {
                 throw new CustomException(ErrorCode.TOO_MANY_FILES);
@@ -49,8 +50,7 @@ public class FileService {
                 try (InputStream inputStream = file.getInputStream()) {
                     amazonS3Client.putObject(new PutObjectRequest(bucket + "/review/image", fileName, inputStream, objectMetadata)
                             .withCannedAcl(CannedAccessControlList.PublicRead));
-                    String imgUrl = amazonS3Client.getUrl(bucket + "/review/image", fileName).toString();
-                    fileDtos.add(new FileDto(fileName , imgUrl));
+                    urlList.add(amazonS3Client.getUrl(bucket + "/review/image", fileName).toString());
                 } catch (IOException e) {
                     throw new CustomException(ErrorCode.IMAGE_UPLOAD_ERROR, "image upload fail");
                 }
@@ -58,8 +58,9 @@ public class FileService {
             }
 
         }
-        return fileDtos;
+        return urlList;
     }
+
 
     /* 파일명 생성 */
     private String makeFileName(MultipartFile multipartFile){
@@ -70,8 +71,21 @@ public class FileService {
     }
 
     /* S3 이미지 삭제 */
-    public void deleteImage(String ImageUrl , String fileName) {
-        String key = "review/image/" + fileName;
+    public void deleteImage(String ImageUrl) {
+        String key = extractUrl(ImageUrl);
         amazonS3Client.deleteObject(new DeleteObjectRequest(bucket , key));
+    }
+
+    /* 파일명 추출 */
+    private String extractUrl(String url){
+        String targetPrefix = "review/";
+        int startIndex = url.indexOf(targetPrefix);
+
+        if(startIndex!= -1){
+            return url.substring(startIndex);
+        }
+        else{
+            throw new IllegalArgumentException("URL does not contain the expected path: " + targetPrefix);
+        }
     }
 }
