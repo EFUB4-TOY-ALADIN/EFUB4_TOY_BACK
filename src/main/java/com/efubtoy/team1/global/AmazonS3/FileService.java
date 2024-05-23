@@ -85,7 +85,7 @@ public class FileService {
             return url.substring(startIndex);
         }
         else{
-            throw new IllegalArgumentException("URL does not contain the expected path: " + targetPrefix);
+            throw new IllegalArgumentException("url 경로가 잘못되었습니다.");
         }
     }
 }

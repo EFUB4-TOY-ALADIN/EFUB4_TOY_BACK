@@ -52,10 +52,10 @@ public class ReviewController {
     }
 
     /* 리뷰 삭제 */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{reviewId}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public String DeleteReview(@PathVariable(name = "id") Long id){
-        reviewService.deleteReview(id);
+    public String DeleteReview(@AuthUser Account account ,@PathVariable(name = "reviewId") Long reviewId ){
+        reviewService.deleteReview(reviewId , account);
         return "리뷰가 삭제되었습니다.";
     }
 
