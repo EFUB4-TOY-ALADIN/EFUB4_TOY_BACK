@@ -34,7 +34,6 @@ public class FileService {
     private String bucket;
 
     /* 이미지 S3에 업로드 */
-    /* 이미지 S3에 업로드 */
     public List<String> fileUpload(List<MultipartFile> multipartFiles) {
         List<String> urlList = new ArrayList<>();
         if(multipartFiles != null && !multipartFiles.isEmpty()){
