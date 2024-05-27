@@ -33,8 +33,6 @@ public class LoginController {
 
     @GetMapping("/oauth2/kakao")
     public LoginResponseDTO kakaoLoginCallback(@RequestParam("code") String code) throws IOException {
-        System.out.println("LoginController.kakaoLoginCallback");
-
         String accessToken=kaKaoLoginService.getAccessTokenFromKakao(clientId,code);
         AccountRequestDTO userInfo=kaKaoLoginService.getUserInfo(accessToken);
         String userAccessToken = "Bearer "+jwtUtils.createToken(userInfo);
