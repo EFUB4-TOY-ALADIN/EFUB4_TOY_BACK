@@ -1,6 +1,7 @@
 package com.efubtoy.team1.domain.record.domain.category;
 
 import com.efubtoy.team1.domain.book.domain.category.BookCategory;
+import com.efubtoy.team1.domain.record.domain.Record;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -25,7 +26,7 @@ public enum RecordCategory {
 
     /* categoryNum으로 Category 문자열을 찾는 메서드입니다 */
     public static String getCategoryByNum(Long categoryNum){
-        for(BookCategory cat: BookCategory.values()){
+        for(RecordCategory cat: RecordCategory.values()){
             if(cat.getCategoryNum().equals(categoryNum)){
                 return cat.getCategory();
             }
