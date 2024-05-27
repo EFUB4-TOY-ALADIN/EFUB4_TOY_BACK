@@ -1,9 +1,9 @@
 package com.efubtoy.team1.domain.book.dto;
 
 import com.efubtoy.team1.domain.book.domain.Book;
-import com.efubtoy.team1.domain.book.domain.category.Category;
+import com.efubtoy.team1.domain.book.domain.category.BookCategory;
 import com.efubtoy.team1.domain.book.domain.category.IsDomestic;
-import com.efubtoy.team1.domain.book.domain.category.Topic;
+import com.efubtoy.team1.domain.book.domain.category.BookTopic;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,8 +36,8 @@ public class BookDto {
                 .location(book.getLocation())
                 .stock(book.getStock())
                 .domestic(IsDomestic.getDomesticByIsDomestic(book.getIsDomestic()))
-                .category(Category.getCategoryByNum(book.getCategory()))
-                .topic(Topic.getTopicByTopicNum(book.getTopic()))
+                .category(BookCategory.getCategoryByNum(book.getCategory()))
+                .topic(BookTopic.getTopicByTopicNum(book.getTopic()))
                 .refImage(book.getRefImage())
                 .build();
 

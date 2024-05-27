@@ -33,10 +33,11 @@ public class LoginController {
 
     @GetMapping("/oauth2/kakao")
     public LoginResponseDTO kakaoLoginCallback(@RequestParam("code") String code) throws IOException {
-        System.out.println("LoginController.kakaoLoginCallback");
-
+        //클라이언트 서버에서 보내온 코드로 사용자 정보 확인
         String accessToken=kaKaoLoginService.getAccessTokenFromKakao(clientId,code);
         AccountRequestDTO userInfo=kaKaoLoginService.getUserInfo(accessToken);
+
+        //사용자 엑세스 토큰과 리프레시 토큰 생성
         String userAccessToken = "Bearer "+jwtUtils.createToken(userInfo);
         String userRefreshToken= jwtUtils.createRefreshToken(userInfo);
 

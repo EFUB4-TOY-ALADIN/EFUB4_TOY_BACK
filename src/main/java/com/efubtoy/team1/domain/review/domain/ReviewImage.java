@@ -28,6 +28,8 @@ public class ReviewImage{
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Review review;
 
+
+
     @Builder
     public ReviewImage( String imageUrl, Review review) {
         this.imageUrl = imageUrl;

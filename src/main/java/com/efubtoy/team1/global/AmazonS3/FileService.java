@@ -1,7 +1,9 @@
 package com.efubtoy.team1.global.AmazonS3;
 
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.efubtoy.team1.global.exception.CustomException;
@@ -14,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,13 +25,15 @@ import java.util.UUID;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class FileUploadService {
+public class FileService {
 
     private final AmazonS3 amazonS3Client;
+
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    /* 이미지 S3에 업로드 */
     /* 이미지 S3에 업로드 */
     public List<String> fileUpload(List<MultipartFile> multipartFiles) {
         List<String> urlList = new ArrayList<>();
@@ -55,11 +61,31 @@ public class FileUploadService {
         return urlList;
     }
 
+
     /* 파일명 생성 */
     private String makeFileName(MultipartFile multipartFile){
         String originalName = multipartFile.getOriginalFilename();
         final String ext = originalName.substring(originalName.lastIndexOf("."));
         final String fileName = UUID.randomUUID().toString() + ext;
         return fileName;
+    }
+
+    /* S3 이미지 삭제 */
+    public void deleteImage(String ImageUrl) {
+        String key = extractUrl(ImageUrl);
+        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket , key));
+    }
+
+    /* 파일명 추출 */
+    private String extractUrl(String url){
+        String targetPrefix = "review/";
+        int startIndex = url.indexOf(targetPrefix);
+
+        if(startIndex!= -1){
+            return url.substring(startIndex);
+        }
+        else{
+            throw new IllegalArgumentException("url 경로가 잘못되었습니다.");
+        }
     }
 }

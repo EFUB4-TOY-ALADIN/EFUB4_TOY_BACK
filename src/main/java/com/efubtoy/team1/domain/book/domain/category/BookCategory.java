@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Category {
+public enum BookCategory {
     CAT1(1L,"건강/취미"),
     CAT2(2L,"고전"),
     CAT3(3L,"과학"),
@@ -24,7 +24,7 @@ public enum Category {
 
     /* categoryNum으로 Category 문자열을 찾는 메서드입니다 */
     public static String getCategoryByNum(Long categoryNum){
-        for(Category cat:Category.values()){
+        for(BookCategory cat: BookCategory.values()){
             if(cat.getCategoryNum().equals(categoryNum)){
                 return cat.getCategory();
             }
