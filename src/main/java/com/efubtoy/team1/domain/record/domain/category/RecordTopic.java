@@ -2,6 +2,7 @@ package com.efubtoy.team1.domain.record.domain.category;
 
 
 import com.efubtoy.team1.domain.book.domain.category.BookTopic;
+import com.efubtoy.team1.domain.record.domain.Record;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -18,7 +19,7 @@ public enum RecordTopic {
     private final String topic;
 
     public static String getTopicByTopicNum(Long topicNum){
-        for(BookTopic topic : BookTopic.values()){
+        for(RecordTopic topic : RecordTopic.values()){
             if (topic.getTopicNum().equals(topicNum)){
                 return topic.getTopic();
             }
