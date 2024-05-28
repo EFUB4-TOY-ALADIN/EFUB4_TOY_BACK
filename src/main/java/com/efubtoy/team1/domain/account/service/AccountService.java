@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 public class AccountService {
     private final AccountRepository accountRepository;
 
+    public long findAccountIdByEmail(String email){
+        Account account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Unexpected account"));
+        return account.getAccountId();
+    }
 
     public Account findAccountById(Long accountId) {
         return accountRepository.findById(accountId)
