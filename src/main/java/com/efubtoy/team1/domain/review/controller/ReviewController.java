@@ -32,7 +32,7 @@ public class ReviewController {
                                           ReviewRequestDto reviewRequestDto){
         List<String> urlList = fileService.fileUpload(multipartFiles);
         System.out.println("Image 경로 : " + urlList);
-        Review savedReview = reviewService.saveReview(account , reviewRequestDto , urlList ); // 이미지 경로들 받아서 리뷰 생성
+        Review savedReview = reviewService.saveReview(account, reviewRequestDto , urlList ); // 이미지 경로들 받아서 리뷰 생성
         return ReviewResponseDto.from(savedReview);
     }
 
