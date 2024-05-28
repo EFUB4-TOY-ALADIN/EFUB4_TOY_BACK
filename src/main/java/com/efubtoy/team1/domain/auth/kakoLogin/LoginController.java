@@ -1,6 +1,7 @@
 package com.efubtoy.team1.domain.auth.kakoLogin;
 
 import com.efubtoy.team1.domain.account.dto.AccountRequestDTO;
+import com.efubtoy.team1.domain.account.service.AccountService;
 import com.efubtoy.team1.domain.auth.dto.LoginResponseDTO;
 import com.efubtoy.team1.global.exception.CustomException;
 import com.efubtoy.team1.global.exception.ErrorCode;
@@ -26,6 +27,7 @@ public class LoginController {
 
     private final KaKaoLoginService kaKaoLoginService;
     private final JWTUtils jwtUtils;
+    private final AccountService accountService;
 
     @GetMapping("/login")
     public ResponseEntity<String> kakaoLogin(){
@@ -48,9 +50,11 @@ public class LoginController {
         //사용자 엑세스 토큰과 리프레시 토큰 생성
         String userAccessToken = "Bearer "+jwtUtils.createToken(userInfo);
         String userRefreshToken= jwtUtils.createRefreshToken(userInfo);
+        long accountId = accountService.findAccountIdByEmail(userInfo.getEmail());
 
         LoginResponseDTO responseDto = LoginResponseDTO.builder()
                 .userinfo(userInfo)
+                .accountId(accountId)
                 .accessToken(userAccessToken)
                 .refreshToken(userRefreshToken)
                 .build();
