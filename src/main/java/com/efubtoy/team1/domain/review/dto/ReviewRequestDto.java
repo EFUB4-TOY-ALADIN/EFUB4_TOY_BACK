@@ -21,8 +21,6 @@ public class ReviewRequestDto {
     @NotBlank(message = "평점은 필수입니다.")
     @Max(value = 6, message = "평점은 5 이하여야 합니다.")
     private Long grade;
-    @NotBlank(message = "계정 id는 필수입니다.")
-    private String accountId;
 
 
     public Review toEntity(Account account){
