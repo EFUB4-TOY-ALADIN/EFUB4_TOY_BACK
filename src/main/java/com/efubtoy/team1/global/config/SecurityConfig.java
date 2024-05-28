@@ -70,6 +70,7 @@ public class SecurityConfig {
         corsConfiguration.addAllowedOrigin("https://localhost:3000");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.setAllowCredentials(true);
 
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**",corsConfiguration);
 
