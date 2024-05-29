@@ -16,5 +16,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
 
     @Query("SELECT b from Book b where b.title LIKE %:searchWord%")
-    Optional<List<BookDto>> findByTitle(@Param("searchWord") String searchWord);
+    Optional<List<Book>> findByTitle(@Param("searchWord") String searchWord);
 }
