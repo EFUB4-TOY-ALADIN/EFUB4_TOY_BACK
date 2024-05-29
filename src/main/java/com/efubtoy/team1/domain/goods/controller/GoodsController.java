@@ -24,10 +24,16 @@ public class GoodsController {
         return goodsService.getGoods(goodsId);
     }
 
-    @GetMapping
+    @GetMapping()
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<GoodsListResponseDto> findGoodsList(){
         List<GoodsDto> goodsDtoList = goodsService.findAllGoods();
         return ResponseEntity.ok().body(GoodsListResponseDto.of(goodsDtoList));
+    }
+
+    @GetMapping("/test")
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseEntity<String> test(){
+        return ResponseEntity.ok().body("test");
     }
 }
