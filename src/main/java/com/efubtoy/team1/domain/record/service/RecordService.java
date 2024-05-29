@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,9 @@ public class RecordService {
 
     /* 음반의 최저가랑 재고 조회 */
     public List<RecordResponseDto> findRecordWithLowestAndStock(List<Record> recordList){
+        if (recordList == null || recordList.isEmpty()) {
+            return Collections.emptyList(); // 빈 리스트 반환
+        }
         return recordList.stream()
                 .map(record -> {
                     List<UsedRecord> usedRecordList = usedRecordRepository.findAllByRecord(record);
