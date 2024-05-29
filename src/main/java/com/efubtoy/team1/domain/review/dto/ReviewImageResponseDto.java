@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class ReviewImageResponseDto {
 
     private Long review_id;
-    //private Long account_id;
+    private Long account_id;
     private Long grade;
     private String content;
     private LocalDateTime created_at;
@@ -32,7 +32,7 @@ public class ReviewImageResponseDto {
 
         return new ReviewImageResponseDto(
                 review.getReviewId(),
-                //review.getAccount().getAccountId(),
+                review.getAccount().getAccountId(),
                 review.getGrade(),
                 review.getContent(),
                 review.getCreated_at(),
