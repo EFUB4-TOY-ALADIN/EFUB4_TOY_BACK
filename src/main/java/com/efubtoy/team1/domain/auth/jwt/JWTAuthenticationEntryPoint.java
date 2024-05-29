@@ -14,7 +14,6 @@ public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         System.out.println("JWTAuthenticationEntryPoint.commence");
-
         response.setStatus(404);
         response.getWriter().write("JWT 토큰이 유효하지 않습니다.");
     }
