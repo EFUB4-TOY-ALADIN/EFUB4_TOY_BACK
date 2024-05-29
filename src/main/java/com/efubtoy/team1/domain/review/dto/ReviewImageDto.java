@@ -14,9 +14,6 @@ public class ReviewImageDto {
     private Long imageId;
     private String imageUrl;
 
-
-
-
     public static ReviewImageDto from(ReviewImage reviewImage) {
         return new ReviewImageDto(
                 reviewImage.getImageId(),
