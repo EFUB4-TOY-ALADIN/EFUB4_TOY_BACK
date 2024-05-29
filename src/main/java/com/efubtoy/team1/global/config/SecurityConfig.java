@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .httpBasic((basic)->basic
                         .disable())
                 .authorizeHttpRequests((request)->request
-                        .requestMatchers("/accounts/join","/login","/oauth2/kakao","/books/**","/goods/**" , "/records/**" , "/review/**" , "/search**").permitAll()
+                        .requestMatchers("/accounts/join","/login","/oauth2/kakao","/books/**","/goods/**" , "/records/**" , "/review/**","/records/**" , "/search**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling((ex)->ex
                         .authenticationEntryPoint(jwtAuthenticationEntry()))
@@ -74,7 +74,6 @@ public class SecurityConfig {
         corsConfiguration.addAllowedMethod("DELETE");
         corsConfiguration.addAllowedMethod("OPTIONS");
         corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.setAllowCredentials(true);
 
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**",corsConfiguration);
 
