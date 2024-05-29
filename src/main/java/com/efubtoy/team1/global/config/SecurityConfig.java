@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .httpBasic((basic)->basic
                         .disable())
                 .authorizeHttpRequests((request)->request
-                        .requestMatchers("/accounts/join","/login","/oauth2/kakao","/books/**","/goods/**","/records/**","/review/**","/records/**").permitAll()
+                        .requestMatchers("/accounts/join","/login","/oauth2/kakao","/books/**","/goods/**" , "/records/**" , "/review/**","/records/**" , "/search**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling((ex)->ex
                         .authenticationEntryPoint(jwtAuthenticationEntry()))
@@ -66,15 +66,9 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource=new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfiguration=new CorsConfiguration();
 
-        corsConfiguration.addAllowedOrigin("http://localhost:3000");
-        corsConfiguration.addAllowedOrigin("https://localhost:3000");
-        corsConfiguration.addAllowedMethod("GET"); //특정 메소드만 허용
-        corsConfiguration.addAllowedMethod("POST"); //특정 메소드만 허용
-        corsConfiguration.addAllowedMethod("PATCH"); //특정 메소드만 허용
-        corsConfiguration.addAllowedMethod("DELETE"); //특정 메소드만 허용
-        corsConfiguration.addAllowedMethod("OPTIONS"); //특정 메소드만 허용
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedMethod("*");
         corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.setAllowCredentials(true);
 
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**",corsConfiguration);
 
