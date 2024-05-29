@@ -1,7 +1,10 @@
 package com.efubtoy.team1.domain.auth.kakoLogin;
 
 import com.efubtoy.team1.domain.account.dto.AccountRequestDTO;
+import com.efubtoy.team1.domain.account.service.AccountService;
 import com.efubtoy.team1.domain.auth.dto.LoginResponseDTO;
+import com.efubtoy.team1.global.exception.CustomException;
+import com.efubtoy.team1.global.exception.ErrorCode;
 import com.efubtoy.team1.global.utils.JWTUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +27,7 @@ public class LoginController {
 
     private final KaKaoLoginService kaKaoLoginService;
     private final JWTUtils jwtUtils;
+    private final AccountService accountService;
 
     @GetMapping("/login")
     public ResponseEntity<String> kakaoLogin(){
@@ -32,16 +36,28 @@ public class LoginController {
     }
 
     @GetMapping("/oauth2/kakao")
-    public LoginResponseDTO kakaoLoginCallback(@RequestParam("code") String code) throws IOException {
-        String accessToken=kaKaoLoginService.getAccessTokenFromKakao(clientId,code);
-        AccountRequestDTO userInfo=kaKaoLoginService.getUserInfo(accessToken);
+    public ResponseEntity<LoginResponseDTO> kakaoLoginCallback(@RequestParam("code") String code){
+        //클라이언트 서버에서 보내온 코드로 사용자 정보 확인
+        String accessToken="";
+        AccountRequestDTO userInfo=null;
+        try {
+            accessToken = kaKaoLoginService.getAccessTokenFromKakao(clientId, code);
+            userInfo = kaKaoLoginService.getUserInfo(accessToken);
+        }catch (IOException e){
+            throw new CustomException(ErrorCode.INVALID_ACCESS);
+        }
+
+        //사용자 엑세스 토큰과 리프레시 토큰 생성
         String userAccessToken = "Bearer "+jwtUtils.createToken(userInfo);
         String userRefreshToken= jwtUtils.createRefreshToken(userInfo);
+        long accountId = accountService.findAccountIdByEmail(userInfo.getEmail());
 
-        return LoginResponseDTO.builder()
+        LoginResponseDTO responseDto = LoginResponseDTO.builder()
                 .userinfo(userInfo)
+                .accountId(accountId)
                 .accessToken(userAccessToken)
                 .refreshToken(userRefreshToken)
                 .build();
+        return ResponseEntity.ok().body(responseDto);
     }
 }

@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 public class LoginResponseDTO {
 
     private AccountRequestDTO userinfo;
+    //프런트엔드 요청으로 리뷰 삭제 시 작성자 유무 구분하기 위해 accountId 추가
+    private long accountId;
     private String accessToken;
     private String refreshToken;
 

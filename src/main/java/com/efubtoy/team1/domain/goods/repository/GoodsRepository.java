@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
+import java.util.List;
+
 public interface GoodsRepository extends JpaRepository<Goods,Long> {
 
     @Query("SELECT g from Goods g where g.goodsName LIKE %:searchWord%")

@@ -66,9 +66,15 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource=new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfiguration=new CorsConfiguration();
 
-        corsConfiguration.addAllowedOrigin("*");
-        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addAllowedOrigin("http://localhost:3000");
+        corsConfiguration.addAllowedOrigin("https://localhost:3000");
+        corsConfiguration.addAllowedMethod("GET"); //특정 메소드만 허용
+        corsConfiguration.addAllowedMethod("POST"); //특정 메소드만 허용
+        corsConfiguration.addAllowedMethod("PATCH"); //특정 메소드만 허용
+        corsConfiguration.addAllowedMethod("DELETE"); //특정 메소드만 허용
+        corsConfiguration.addAllowedMethod("OPTIONS"); //특정 메소드만 허용
         corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.setAllowCredentials(true);
 
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**",corsConfiguration);
 
