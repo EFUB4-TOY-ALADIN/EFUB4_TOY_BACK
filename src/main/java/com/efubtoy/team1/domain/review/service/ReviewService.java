@@ -58,12 +58,16 @@ public class ReviewService {
     /* 리뷰 삭제 */
     public void deleteReview(Long reviewId , Account account) {
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(()->new EntityNotFoundException("해당 id를 가진 리여를 찾을 수 없습니다. id="+ reviewId));
+                .orElseThrow(()->new EntityNotFoundException("해당 id를 가진 리뷰를 찾을 수 없습니다. id="+ reviewId));
         if(!review.getAccount().getAccountId().equals(account.getAccountId())){ //리뷰의 작성자와 회원이 일치하지 않는 경우 , 예외
             throw  new CustomException(ErrorCode.INVALID_ACCESS);
         }
-        ReviewImage reviewImage = reviewImageRepository.findImageByReview(review);
-        fileService.deleteImage(reviewImage.getImageUrl());
+        //리뷰id에 해당하는 이미지들 배열로 받기
+        List<ReviewImage> reviewImages = reviewImageRepository.findImageByReview(review);
+
+        for (ReviewImage reviewImage : reviewImages) {
+            fileService.deleteImage(reviewImage.getImageUrl());
+        }
         reviewRepository.delete(review);
     }
 }
