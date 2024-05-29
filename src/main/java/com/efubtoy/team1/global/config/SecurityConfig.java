@@ -66,6 +66,7 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource=new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfiguration=new CorsConfiguration();
 
+        corsConfiguration.addAllowedOrigin("https://efub4-toy-front-end.vercel.app/");
         corsConfiguration.addAllowedOrigin("http://localhost:3000");
         corsConfiguration.addAllowedOrigin("https://localhost:3000");
         corsConfiguration.addAllowedMethod("GET");
