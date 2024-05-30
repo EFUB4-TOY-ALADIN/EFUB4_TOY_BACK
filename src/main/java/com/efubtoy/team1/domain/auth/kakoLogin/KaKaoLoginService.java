@@ -3,6 +3,8 @@ package com.efubtoy.team1.domain.auth.kakoLogin;
 import com.efubtoy.team1.domain.account.domain.Account;
 import com.efubtoy.team1.domain.account.dto.AccountRequestDTO;
 import com.efubtoy.team1.domain.account.repository.AccountRepository;
+import com.efubtoy.team1.global.exception.CustomException;
+import com.efubtoy.team1.global.exception.ErrorCode;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -98,16 +101,23 @@ public class KaKaoLoginService {
 
         String nickname = properties.get("nickname").toString();
 
-        System.out.println(nickname);
         String email = kakao_account.get("email").toString();
 
-        //email 확인
-        Account account = accountRepository.findByEmail(email)
-                .orElseThrow(()-> new RuntimeException("계정을 찾을 수 없습니다. 회원가입이 필요합니다."));
+        Object account=accountRepository.findByEmail(email);
+        if (account == null){
+            Account newAccount = Account.builder()
+                    .nickname(nickname)
+                    .email(email)
+                    .build();
+            accountRepository.save(newAccount);
+        }
+
+        Account member = accountRepository.findByEmail(email).
+                orElseThrow(()-> new CustomException(ErrorCode.INVALID_ACCOUNT));
 
         AccountRequestDTO dto = AccountRequestDTO.builder()
-                .nickname(account.getNickname())
-                .email(account.getEmail())
+                .nickname(member.getNickname())
+                .email(member.getEmail())
                 .build();
 
         return dto;
