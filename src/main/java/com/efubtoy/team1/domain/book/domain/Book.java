@@ -36,6 +36,9 @@ public class Book {
     @Transient
     private Long stock;
 
+    @Transient
+    private Long lowestPrice;
+
     @Column(name = "is_domestic")
     private Boolean isDomestic;
 
@@ -53,6 +56,15 @@ public class Book {
 
     public long getStock(){
         return usedBookList.size();
+    }
+    public long getLowestPrice(){
+        long price=100000000000l;
+        for (UsedBook book : usedBookList){
+            if (price>book.getPrice()){
+                price=book.getPrice();
+            }
+        }
+        return price;
     }
 
     @PostLoad
