@@ -21,6 +21,7 @@ public class BookDto {
     private Long regularPrice;
     private String location;
     private Long stock;
+    private long lowestPrice;
     private String domestic;
     private String category;
     private String topic;
@@ -35,6 +36,7 @@ public class BookDto {
                 .regularPrice(book.getRegularPrice())
                 .location(book.getLocation())
                 .stock(book.getStock())
+                .lowestPrice(book.getLowestPrice())
                 .domestic(IsDomestic.getDomesticByIsDomestic(book.getIsDomestic()))
                 .category(BookCategory.getCategoryByNum(book.getCategory()))
                 .topic(BookTopic.getTopicByTopicNum(book.getTopic()))
