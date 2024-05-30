@@ -103,7 +103,7 @@ public class KaKaoLoginService {
 
         String email = kakao_account.get("email").toString();
 
-        Object account=accountRepository.findByEmail(email);
+        Optional<Account> account=accountRepository.findByEmail(email);
         if (account == null){
             Account newAccount = Account.builder()
                     .nickname(nickname)
@@ -112,12 +112,9 @@ public class KaKaoLoginService {
             accountRepository.save(newAccount);
         }
 
-        Account member = accountRepository.findByEmail(email).
-                orElseThrow(()-> new CustomException(ErrorCode.INVALID_ACCOUNT));
-
         AccountRequestDTO dto = AccountRequestDTO.builder()
-                .nickname(member.getNickname())
-                .email(member.getEmail())
+                .nickname(nickname)
+                .email(email)
                 .build();
 
         return dto;
