@@ -104,7 +104,7 @@ public class KaKaoLoginService {
         String email = kakao_account.get("email").toString();
 
         Optional<Account> account=accountRepository.findByEmail(email);
-        if (account == null){
+        if (account.isEmpty()){
             Account newAccount = Account.builder()
                     .nickname(nickname)
                     .email(email)
