@@ -50,7 +50,8 @@ public class SecurityConfig {
                 .httpBasic((basic)->basic
                         .disable())
                 .authorizeHttpRequests((request)->request
-                        .requestMatchers("/accounts/join","/login","/oauth2/kakao","/test","/books/**","/goods/**" , "/records/**" , "/review/**","/records/**" , "/search**").permitAll()
+                        .requestMatchers("/accounts/join","/login","/oauth2/kakao","/test","/books/**","/goods/**" ,
+                                "/records/**" , "/review/**","/records/**" , "/search**","/carts/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling((ex)->ex
                         .authenticationEntryPoint(jwtAuthenticationEntry()))
