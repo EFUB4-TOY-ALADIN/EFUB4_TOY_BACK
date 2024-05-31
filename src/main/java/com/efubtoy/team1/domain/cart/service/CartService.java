@@ -47,7 +47,7 @@ public class CartService {
     /* 장바구니에 상품 삭제 */
     public ResponseEntity deleteCart(Account account, Long cartId) {
         Cart cart = findCartById(cartId);
-        if(!cart.getAccount().equals(account)) throw new CustomException(ErrorCode.INVALID_ACCOUNT);
+        if(!cart.getAccount().getAccountId().equals(account.getAccountId())) throw new CustomException(ErrorCode.INVALID_ACCOUNT);
         cartRepository.delete(cart);
         return ResponseEntity.status(HttpStatus.OK)
                 .body("장바구니가 삭제되었습니다!");
