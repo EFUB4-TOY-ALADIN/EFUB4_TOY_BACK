@@ -30,6 +30,9 @@ public class ReviewService {
 
     /* 리뷰 테이블에 사진 url들과 리뷰 내용 저장 */
     public Review saveReview(Account account , ReviewRequestDto reviewRequestDto, List<String> urlList ) {
+        if(account == null){ // 계정을 찾을 수 없는 경우
+             throw new CustomException(ErrorCode.INVALID_ACCESS);
+        }
         Review review = reviewRequestDto.toEntity(account);
         Review savedReview = reviewRepository.save(review);
         saveReviewImage(savedReview.getReviewId() , urlList); // 반환받은 id로 리뷰 이미지 테이블 저장
