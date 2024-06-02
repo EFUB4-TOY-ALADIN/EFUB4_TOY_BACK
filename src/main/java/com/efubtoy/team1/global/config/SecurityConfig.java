@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -34,7 +35,10 @@ public class SecurityConfig {
         return web -> {
             web.ignoring()
                     .requestMatchers("/swagger-ui/**S",
-                            //"/**",
+
+
+                            "/books/**", "/login", "/goods/**" , "/review/**","/records/**" , "/search**",
+
                             "/swagger-resources/**",
                             "/v3/api-docs/**");
         };
@@ -42,17 +46,26 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+
         return http
                 .csrf((csrf)->csrf
                         .disable())
-                .cors((auth)->auth
-                        .configurationSource(corsConfiguration()))
-                .httpBasic((basic)->basic
-                        .disable())
-                .authorizeHttpRequests((request)->request
-                        .requestMatchers("/accounts/join","/login","/oauth2/kakao","/test","/books/**","/goods/**" ,
-                                "/records/**" , "/review/**","/records/**" , "/search**","/carts/**").permitAll()
-                        .anyRequest().authenticated())
+                .cors((auth)->auth.configurationSource(corsConfiguration()))
+                .httpBasic((basic)->basic.disable())
+                .authorizeHttpRequests(
+                        authorize -> authorize
+                                .requestMatchers("/login").permitAll()
+                                .requestMatchers("/oauth2/kakao").permitAll()
+                                .requestMatchers("/accounts/join").permitAll()
+                                .anyRequest().authenticated()
+                )
+/*
+                .authorizeHttpRequests((request)->request.requestMatchers("/accounts/join","/login","/oauth2/kakao","/test",
+                                "/books/**","/goods/**" , "/records/**" , "/review/**","/records/**" , "/search**").permitAll()
+                        .anyRequest().permitAll())
+
+
+ */
                 .exceptionHandling((ex)->ex
                         .authenticationEntryPoint(jwtAuthenticationEntry()))
                 .addFilterBefore(new JWTFilter(jwtUtils, accountRepository), UsernamePasswordAuthenticationFilter.class)
