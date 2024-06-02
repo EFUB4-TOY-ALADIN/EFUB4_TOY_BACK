@@ -57,6 +57,11 @@ public class SecurityConfig {
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/oauth2/kakao").permitAll()
                                 .requestMatchers("/accounts/join").permitAll()
+                                .requestMatchers("/books/**").permitAll()
+                                .requestMatchers("/goods/**").permitAll()
+                                .requestMatchers("/records/**").permitAll()
+                                .requestMatchers("/review/**").permitAll()
+                                .requestMatchers("/search**").permitAll()
                                 .anyRequest().authenticated()
                 )
 /*
