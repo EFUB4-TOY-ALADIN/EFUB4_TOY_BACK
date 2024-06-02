@@ -100,8 +100,8 @@ public class KaKaoLoginService {
         Map<String, Object> kakao_account = (Map<String, Object>) jsonMap.get("kakao_account");
 
         String nickname = properties.get("nickname").toString();
-
         String email = kakao_account.get("email").toString();
+
 
         Optional<Account> account=accountRepository.findByEmail(email);
         if (account.isEmpty()){
