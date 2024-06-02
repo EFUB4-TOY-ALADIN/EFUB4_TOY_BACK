@@ -86,7 +86,9 @@ public class SecurityConfig {
         CorsConfiguration corsConfiguration=new CorsConfiguration();
 
         corsConfiguration.addAllowedOrigin("https://efub4-toy-front-end.vercel.app/");
+        corsConfiguration.addAllowedOrigin("https://api.toy-team1.o-r.kr/");
         corsConfiguration.addAllowedOrigin("http://localhost:3000");
+        corsConfiguration.addAllowedOrigin("http://localhost:8080");
         corsConfiguration.addAllowedOrigin("https://localhost:3000");
         corsConfiguration.addAllowedMethod("GET");
         corsConfiguration.addAllowedMethod("POST");
@@ -94,6 +96,7 @@ public class SecurityConfig {
         corsConfiguration.addAllowedMethod("DELETE");
         corsConfiguration.addAllowedMethod("OPTIONS");
         corsConfiguration.addAllowedHeader("*");
+
         // 헤더에 authorization항목이 있으므로 credential을 true로 설정합니다.
         corsConfiguration.setAllowCredentials(true);
 
