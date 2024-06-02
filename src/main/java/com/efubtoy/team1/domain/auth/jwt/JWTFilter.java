@@ -37,6 +37,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
             String token = authorization.split(" ")[1];
 
+
             // 2. 토큰 기한 만료 여부 확인
             if (jwtUtils.isExpired(token)){
                 throw new JWTAuthenticationException("토큰의 기한이 만료되었습니다. 다시 로그인을 진행하십시오.");
