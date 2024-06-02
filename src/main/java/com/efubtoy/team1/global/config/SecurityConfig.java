@@ -35,12 +35,10 @@ public class SecurityConfig {
         return web -> {
             web.ignoring()
                     .requestMatchers("/swagger-ui/**S",
-
-
-                            "/books/**", "/login", "/goods/**" , "/review/**","/records/**" , "/search**",
-
+                            //"/books/**", "/login", "/goods/**" , "/review/**","/records/**" , "/search**",
                             "/swagger-resources/**",
-                            "/v3/api-docs/**");
+                            "/v3/api-docs/**"
+                    );
         };
     }
 
@@ -68,8 +66,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests((request)->request.requestMatchers("/accounts/join","/login","/oauth2/kakao","/test",
                                 "/books/**","/goods/**" , "/records/**" , "/review/**","/records/**" , "/search**").permitAll()
                         .anyRequest().permitAll())
-
-
  */
                 .exceptionHandling((ex)->ex
                         .authenticationEntryPoint(jwtAuthenticationEntry()))
