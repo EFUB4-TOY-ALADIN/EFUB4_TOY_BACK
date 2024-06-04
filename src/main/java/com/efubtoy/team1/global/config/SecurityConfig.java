@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .httpBasic((basic)->basic.disable())
                 .authorizeHttpRequests(
                         authorize -> authorize
-                                .requestMatchers("/login").permitAll()
+                                .requestMatchers("/login","/test").permitAll()
                                 .requestMatchers("/oauth2/kakao").permitAll()
                                 .requestMatchers("/accounts/join").permitAll()
                                 .requestMatchers("/books/**").permitAll()
