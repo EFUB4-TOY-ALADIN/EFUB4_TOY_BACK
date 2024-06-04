@@ -25,7 +25,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         //Authorization header 내용 가져오기
         String authorization = request.getHeader("Authorization");
 
@@ -53,6 +52,7 @@ public class JWTFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
         }catch (JWTAuthenticationException e){
+            System.out.println("JWTFilter.doFilterInternal : 에러 발생");
         }
 
         filterChain.doFilter(request,response);
